@@ -2,11 +2,13 @@ require_relative "tile.rb"
 
 class Grid
 
-    attr_reader :grid, :bomb_count
+    attr_reader :grid, :bomb_count, :grid_size
 
     def initialize(grid_size)
         @grid = Array.new(grid_size) { Array.new (grid_size)}
+        @grid_size = grid_size
         @bomb_count = grid_size - 1
+        @bomb_positions = []
         self.populate_grid_with_tiles
     end
 
@@ -21,12 +23,21 @@ class Grid
 
     def place_bombs #=> places bomb_count bombs by setting the tile objects to true
         bombs_placed = 0
+
         while bombs_placed < bomb_count
-            x = rand(8)
-            y = rand(8)
-            self[[x,y]].place_bomb
-            bombs_placed += 1
+            x = rand(@grid_size-1)
+            y = rand(@grid_size-1)
+
+            if !bomb_checker([x,y])
+                self[[x,y]].place_bomb
+                bombs_placed += 1
+                @bomb_positions << [x,y]
+            end
         end
+    end
+
+    def bomb_checker(pos)
+        @bomb_positions.include?(pos)
     end
 
     def print_grid #=> displays the grid

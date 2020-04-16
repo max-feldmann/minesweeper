@@ -4,7 +4,7 @@ class Minesweeper
     attr_reader :grid
 
     def initialize(grid_size)
-        @grid = Grid.new(grid_size)
+        @grid = Grid.new(grid_size) #dynamic grid
         @bombs_placed = 0
     end
 
