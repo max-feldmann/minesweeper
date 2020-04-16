@@ -24,7 +24,11 @@ class Tile
     end
 
     def flag_position
-        @flagged = true
+        if @flagged == false
+            @flagged = true
+        else
+            @flagged = false
+        end
     end
 
     def reveal_position
