@@ -3,31 +3,40 @@ require_relative "grid.rb"
 class Minesweeper
     attr_reader :grid
 
-    def initialize(grid_size)
-        @grid = Grid.new(grid_size) #dynamic grid
-    end
-
-    def boot_game #=> Places Bombs
-        @grid.place_bombs
-    end
-
-    def run #=> Boots the game. Then asks user for input intil game is won.
+    def initialize
+        @grid = nil #Grid.new(grid_size) #dynamic grid
         self.boot_game
+    end
 
+    def boot_game #=> Ask Game-Size > Initialize Grid > call self.run_game
+        puts "Hello Dude!"
+        puts "Lets play! How big do you want your game to be?"
+        puts
+
+        grid_size = gets.chomp.to_i
+
+        @grid = Grid.new(grid_size)
+        @grid.place_bombs
+        
+        self.run_game
+    end
+
+    def run_game 
+        
         until lost?
+            system ("clear")
+            @grid.print_grid
             self.ask_user_for_input
             #won?
         end
     end
 
     def ask_user_for_input #=> Asks user what he wants to do (flag or reveal). Then asks for a position where he wants to do that.
-        system ("clear")
-        @grid.print_grid
-        
         puts
         puts "What do you want to do? X for Flagging a Postion and R for Revealing a Position"
         puts "(Positions need to be entered like this: row,column)"
-            user_input = gets.chomp
+        
+        user_input = gets.chomp
 
             case user_input
                 when "X"
@@ -52,5 +61,4 @@ class Minesweeper
     end
 end
 
-game = Minesweeper.new(12)
-game.run
+game = Minesweeper.new
