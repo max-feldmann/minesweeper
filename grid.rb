@@ -4,13 +4,13 @@ class Grid
 
     attr_reader :grid, :bomb_count
 
-    def initialize
-        @grid = Array.new(9) { Array.new (9)}
-        @bomb_count = 9 #@grid.size + 1 # wenn grid.size dynamisiert wird. Aktuell 9+1 = 10
-        self.populate_grid
+    def initialize(grid_size)
+        @grid = Array.new(grid_size) { Array.new (grid_size)}
+        @bomb_count = grid_size - 1
+        self.populate_grid_with_tiles
     end
 
-    def populate_grid #=> populates the grid with tiles
+    def populate_grid_with_tiles #=> populates the grid with tiles
         @grid.each_with_index do |row, x|
             row.each_with_index do |spot, y|
                 position = [x,y]

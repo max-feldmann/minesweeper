@@ -13,8 +13,8 @@ class Tile
     end
 
     def display
-        return :B if @bomb && @revealed
-        return :X if @flagged
+        return :B if @bomb #&& @revealed
+        #return :X if @flagged
         return :O if @revealed
         return :Z
     end
@@ -29,6 +29,10 @@ class Tile
 
     def reveal_position
         @revealed = true
+    end
+
+    def neighbor_positions #=> Returns an array of the neigbouring-positions
+
     end
 
 end
