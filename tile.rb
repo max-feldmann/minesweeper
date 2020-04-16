@@ -13,8 +13,8 @@ class Tile
     end
 
     def display
-        return :B if @bomb #&& @revealed
-        #return :X if @flagged
+        return :B if @bomb && @revealed
+        return :X if @flagged
         return :O if @revealed
         return :Z
     end

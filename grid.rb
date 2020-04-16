@@ -5,11 +5,14 @@ class Grid
     attr_reader :grid, :bomb_count, :grid_size
 
     def initialize(grid_size)
+        # Set up Grid
         @grid = Array.new(grid_size) { Array.new (grid_size)}
         @grid_size = grid_size
-        @bomb_count = grid_size - 1
-        @bomb_positions = []
         self.populate_grid_with_tiles
+
+        # Maintain Bomb-Stuff
+        @bomb_count = grid_size - 1 #No. of Bombs is alway 1 less than Grid size
+        @bomb_positions = [] #Maintain bomb pos for already_a_bomb
     end
 
     def populate_grid_with_tiles #=> populates the grid with tiles
@@ -25,10 +28,10 @@ class Grid
         bombs_placed = 0
 
         while bombs_placed < bomb_count
-            x = rand(@grid_size-1)
-            y = rand(@grid_size-1)
+            x = rand(@grid_size)
+            y = rand(@grid_size)
 
-            if !bomb_checker([x,y])
+            if !already_a_bomb([x,y])
                 self[[x,y]].place_bomb
                 bombs_placed += 1
                 @bomb_positions << [x,y]
@@ -36,15 +39,19 @@ class Grid
         end
     end
 
-    def bomb_checker(pos)
+    def already_a_bomb(pos)
         @bomb_positions.include?(pos)
     end
 
     def print_grid #=> displays the grid
-        @grid.each do |row|
+        @grid.each_with_index do |row, i|
             display_values = []
             row.each {|tile| display_values << tile.display}
-            puts "#{display_values.join(" ")}"
+                if i < 10
+                    puts "#{i}--#{display_values.join(" ")}"
+                else
+                    puts "#{i}-#{display_values.join(" ")}"
+                end
         end
     end
 

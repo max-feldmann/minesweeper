@@ -5,7 +5,6 @@ class Minesweeper
 
     def initialize(grid_size)
         @grid = Grid.new(grid_size) #dynamic grid
-        @bombs_placed = 0
     end
 
     def boot_game #=> Places Bombs
@@ -51,9 +50,7 @@ class Minesweeper
     def lost? #=> Will check if user has won and returns true if so.
         return false
     end
-
 end
-
 
 game = Minesweeper.new(12)
 game.run
