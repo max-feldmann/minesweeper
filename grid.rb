@@ -2,15 +2,12 @@ require_relative "tile.rb"
 
 class Grid
 
-    attr_accessor :grid, :bomb_count
-
+    attr_reader :grid, :bomb_count
 
     def initialize
         @grid = Array.new(9) { Array.new (9)}
         @bomb_count = 9 #@grid.size + 1 # wenn grid.size dynamisiert wird. Aktuell 9+1 = 10
         self.populate_grid
-        self.place_bombs(bomb_count)
-        self.print_grid
     end
 
     def populate_grid #=> populates the grid with tiles
@@ -22,7 +19,7 @@ class Grid
         end
     end
 
-    def place_bombs(bomb_count) #=> places bomb_count bombs by setting the tile objects to true
+    def place_bombs #=> places bomb_count bombs by setting the tile objects to true
         bombs_placed = 0
         while bombs_placed < bomb_count
             x = rand(8)
@@ -30,7 +27,6 @@ class Grid
             self[[x,y]].place_bomb
             bombs_placed += 1
         end
-
     end
 
     def print_grid #=> displays the grid
@@ -40,7 +36,6 @@ class Grid
             puts "#{display_values.join(" ")}"
         end
     end
-
 
 
 #---------------HELPER-METHODS----------------
@@ -56,5 +51,3 @@ class Grid
     end
 
 end
-
-g = Grid.new
