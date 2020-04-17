@@ -11,7 +11,7 @@ class Minesweeper
 
     def boot_game #=> Ask Game-Size > Initialize Grid > call self.run_game
         puts "Hello Dude!"
-        puts "Lets play! How big do you want your game to be?"
+        puts "Lets play Minesweeper! How big do you want your game to be?"
         puts
 
         grid_size = gets.chomp.to_i
@@ -47,15 +47,18 @@ class Minesweeper
 
     def handle_user_input(user_input) #=> Do sth with the User Input (e.g. Reveal or Flag as Bomb)
         case user_input
-        when "X"
-            puts "Where do you want to flag?"
-                pos = parse_pos(gets.chomp)
-                @grid[pos].flag_position
-        when "R"
-            puts "Where do you want to reveal?"
-                pos = parse_pos(gets.chomp)
-                @grid[pos].reveal_position
-    end
+            when "X" #> Flagging
+                puts "Where do you want to flag?"
+                    pos = parse_pos(gets.chomp)
+                    @grid[pos].flag_position
+            when "R" #> Revealing
+                puts "Where do you want to reveal?"
+                    pos = parse_pos(gets.chomp)
+                    @grid[pos].reveal_position
+            when "42" #> Just for Fun
+                puts "Noice try Diggie"
+                    return
+            end
     end
 
     def parse_pos(user_guess) #=> Takes a position entered by the user in the form of "1,1" and makes it into an array (of integers) [1,1]

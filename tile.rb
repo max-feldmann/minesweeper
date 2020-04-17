@@ -8,8 +8,6 @@ class Tile
         @bomb = false
         @flagged = false
         @revealed = false
-
-        @value = 0
     end
 
     def display
