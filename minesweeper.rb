@@ -6,7 +6,7 @@ class Minesweeper
     def initialize
         @grid = nil #Grid.new(grid_size) #dynamic grid
         self.boot_game
-        @last_guess = nil
+        @last_guess = nil #=> Set when user input is parsed (in method parse_pos)
     end
 
     def boot_game #=> Ask Game-Size > Initialize Grid > call self.run_game
@@ -30,7 +30,7 @@ class Minesweeper
         end
     end
 
-    def play_turn
+    def play_turn #=> Clear the terminal, print the current grid and ask user for input
         system ("clear")
         @grid.print_grid
         self.ask_user_for_input
@@ -42,17 +42,20 @@ class Minesweeper
         puts "(Positions need to be entered like this: row,column)"
         
         user_input = gets.chomp
+        handle_user_input(user_input)
+    end
 
-            case user_input
-                when "X"
-                    puts "Where do you want to flag?"
-                        pos = parse_pos(gets.chomp)
-                        @grid[pos].flag_position
-                when "R"
-                    puts "Where do you want to reveal?"
-                        pos = parse_pos(gets.chomp)
-                        @grid[pos].reveal_position
-            end
+    def handle_user_input(user_input) #=> Do sth with the User Input (e.g. Reveal or Flag as Bomb)
+        case user_input
+        when "X"
+            puts "Where do you want to flag?"
+                pos = parse_pos(gets.chomp)
+                @grid[pos].flag_position
+        when "R"
+            puts "Where do you want to reveal?"
+                pos = parse_pos(gets.chomp)
+                @grid[pos].reveal_position
+    end
     end
 
     def parse_pos(user_guess) #=> Takes a position entered by the user in the form of "1,1" and makes it into an array (of integers) [1,1]
@@ -62,7 +65,7 @@ class Minesweeper
         return pos
     end
 
-    def lost? #=> Will check if user has lost and returns true if so.
+    def lost? #=> Checks if the position of @grid at last_guess is a bomb
         if @grid[last_guess].bomb
             system ("clear")
             @grid.print_grid
