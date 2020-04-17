@@ -11,7 +11,6 @@ class Grid
         self.populate_grid_with_tiles
 
         # Maintain Bomb-Stuff
-        @bomb_count = grid_size - 1 #No. of Bombs is alway 1 less than Grid size
         @bomb_positions = [] #Maintain bomb pos for already_a_bomb
     end
 
@@ -26,6 +25,7 @@ class Grid
 
     def place_bombs #=> places bomb_count bombs by setting the tile objects to true
         bombs_placed = 0
+        @bomb_count = grid_size - 1 #No. of Bombs is alway 1 less than Grid size
 
         while bombs_placed < bomb_count
             x = rand(@grid_size)

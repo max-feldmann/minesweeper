@@ -1,6 +1,6 @@
 class Tile
 
-    attr_accessor :bomb, :flagged, :value
+    attr_reader :bomb, :flagged, :value
 
     def initialize(position)
         @position = position
