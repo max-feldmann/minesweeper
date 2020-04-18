@@ -40,6 +40,11 @@ class Tile
         return if @revealed || @flagged
         @revealed = true
 
+        # > Recursive Case: Go through neighbor array
+        # > if none is a bomb > call reveal_position again on all neighbors.
+        # > at some point a bomb will be found and the stack resolves
+        # > for all positions not adjacent to a bomb, their revealed is set to true
+        # > since display reveals those where revealed is true > the board is "resolved" in minesweeper fashion
         if neighbor_positions.none? {|neighbor| neighbor.bomb}
             neighbor_positions.each {|neighbor| neighbor.reveal_position}
         end
@@ -47,7 +52,7 @@ class Tile
 
     def neighbor_positions #=> Returns an array of the neigbouring-positions
         all_possible_neighbours = CONTIGOUS_NEIGHBOURS + DIAGIONAL_NEIGHBOURS
-        neighbours = []
+        neighbours = [] #> Supposed to be an array of instances of tile (!) not coordinates.
 
         all_possible_neighbours.each do |neighbour|
             # go through every possible position. Add them to the position indices of the tile you are looking at
