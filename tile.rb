@@ -44,16 +44,25 @@ class Tile
         neighbours = []
 
         all_possible_neighbours.each do |neighbour|
+            # go through every possible position. Add them to the position indices of the tile you are looking at
+            # check if the position you found is on the board
+            # if so, add to neighbour-array
             x,y = (@position[0] + neighbour[0]), (@position[1] + neighbour[1])
             neighbour_position = [x,y]
 
             neighbours << neighbour_position if neighbour_on_grid(neighbour_position)
         end
 
-        p neighbours
+        neighbours
     end
 
-    def neighbour_on_grid(neighbour_position)
+    def neighbour_on_grid(neighbour_position) #=> is neighbors coordinate btw. 0 and maximum index?
         neighbour_position.all? {|coordinate| coordinate.between?(0, @max_index)}
+    end
+
+    def neighbour_bomb_count
+        bomb_count = 0
+        neighbor_positions.each {|neighbour| bomb_count += 1 if neighbour.bomb}
+        bomb_count
     end
 end
