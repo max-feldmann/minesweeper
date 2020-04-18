@@ -10,10 +10,9 @@ class Minesweeper
     end
 
     def boot_game #=> Ask Game-Size > Initialize Grid > call self.run_game
+        system ("clear")
         puts "Hello Dude!"
         puts "Lets play Minesweeper! How big do you want your game to be?"
-        puts
-
         grid_size = gets.chomp.to_i
 
         @grid = Grid.new(grid_size)
@@ -69,7 +68,7 @@ class Minesweeper
     end
 
     def lost? #=> Checks if the position of @grid at last_guess is a bomb
-        if @grid[last_guess].bomb
+        if @grid[last_guess].bomb && !@grid[last_guess].flagged
             system ("clear")
             @grid.print_grid
             puts

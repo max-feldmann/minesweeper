@@ -3,13 +3,13 @@ class Tile
     DIAGIONAL_NEIGHBOURS = [[1,1], [1,-1], [-1,-1], [-1,1]]
     CONTIGOUS_NEIGHBOURS = [[0,1], [1,0], [-1,0], [0,-1]]
 
-    attr_reader :bomb, :flagged, :value, :grid_size
+    attr_reader :bomb, :flagged, :value, :board, :max_index
 
-    def initialize(position, grid_size)
+    def initialize(position, board)
         @position = position
 
-        @grid_size = grid_size
-        @max_index = grid_size - 1
+        @board = board
+        @max_index = board.grid_size - 1
 
         @bomb = false
         @flagged = false
@@ -19,6 +19,7 @@ class Tile
     def display
         return :B if @bomb && @revealed
         return :X if @flagged
+        return "#{neighbour_bomb_count}" if @revealed && neighbour_bomb_count > 0
         return :O if @revealed
         return :Z
     end
@@ -36,7 +37,12 @@ class Tile
     end
 
     def reveal_position
+        return if @revealed || @flagged
         @revealed = true
+
+        if neighbor_positions.none? {|neighbor| neighbor.bomb}
+            neighbor_positions.each {|neighbor| neighbor.reveal_position}
+        end
     end
 
     def neighbor_positions #=> Returns an array of the neigbouring-positions
@@ -50,7 +56,7 @@ class Tile
             x,y = (@position[0] + neighbour[0]), (@position[1] + neighbour[1])
             neighbour_position = [x,y]
 
-            neighbours << neighbour_position if neighbour_on_grid(neighbour_position)
+            neighbours << @board[neighbour_position] if neighbour_on_grid(neighbour_position)
         end
 
         neighbours

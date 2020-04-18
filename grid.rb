@@ -19,7 +19,7 @@ class Grid
         @grid.each_with_index do |row, x|
             row.each_with_index do |tile, y|
                 position = [x,y]
-                self[[x,y]] = Tile.new(position, @grid_size)
+                self[[x,y]] = Tile.new(position, self)
             end
         end
     end
