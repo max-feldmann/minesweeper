@@ -77,4 +77,16 @@ class Grid
       row, col = pos
       @grid[row][col] = value
     end
+
+    def display_all #> Helper method for Testing. Use to display grid with all bombs
+        @grid.each_with_index do |row, i|
+            display_values = []
+            row.each {|tile| display_values << tile.display_help} 
+                if i < 10
+                    puts "#{i}--#{display_values.join(" ")}"
+                else
+                    puts "#{i}-#{display_values.join(" ")}"
+                end
+        end
+    end
 end

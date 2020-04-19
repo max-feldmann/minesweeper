@@ -1,12 +1,15 @@
 require_relative "grid.rb"
+require_relative "tile.rb"
 
 class Minesweeper
-    attr_reader :grid, :last_guess
+    attr_reader :grid, :last_guess, :bomb_count, :total_to_be_found
 
     def initialize
         @grid = nil #Grid.new(grid_size) #dynamic grid
         self.boot_game
         @last_guess = nil #=> Set when user input is parsed (in method parse_pos)
+
+        @total_to_be_found = 0
     end
 
     def boot_game #=> Ask Game-Size > Initialize Grid > call self.run_game
@@ -14,6 +17,8 @@ class Minesweeper
         puts "Hello Dude!"
         puts "Lets play Minesweeper! How big do you want your game to be?"
         grid_size = gets.chomp.to_i
+
+        @total_to_be_found = (grid_size * grid_size) - (grid_size - 1)
 
         @grid = Grid.new(grid_size)
         @grid.place_bombs
@@ -23,15 +28,20 @@ class Minesweeper
 
     def run_game 
         self.play_turn        
-        until lost?
+        until over?
             self.play_turn
-            #won?
         end
+    end
+
+    def over?
+        lost? || won?
     end
 
     def play_turn #=> Clear the terminal, print the current grid and ask user for input
         system ("clear")
         @grid.print_grid
+        #puts
+        #@grid.display_all #=> Helper method for testing. Turn on to always also display a grid with bombs revealed.
         self.ask_user_for_input
     end
 
@@ -54,9 +64,6 @@ class Minesweeper
                 puts "Where do you want to reveal?"
                     pos = parse_pos(gets.chomp)
                     @grid[pos].reveal_position
-            when "42" #> Just for Fun
-                puts "Noice try Diggie"
-                    return
             end
     end
 
@@ -75,6 +82,21 @@ class Minesweeper
             puts "That was a bomb, bro :/ You Lost! See you!"
             return true
         end
+    end
+
+    def won? #> Compare number of revelead tiles to number of non-bomb tiles that can be found
+        alread_revealed = 0
+        @grid.grid.each do |row|
+            row.each do |tile|
+                if tile.revealed
+                    alread_revealed += 1
+                end
+            end
+        end
+        if alread_revealed == @total_to_be_found
+            return true
+        end
+        false
     end
 end
 

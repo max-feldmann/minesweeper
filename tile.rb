@@ -3,7 +3,7 @@ class Tile
     DIAGIONAL_NEIGHBOURS = [[1,1], [1,-1], [-1,-1], [-1,1]]
     CONTIGOUS_NEIGHBOURS = [[0,1], [1,0], [-1,0], [0,-1]]
 
-    attr_reader :bomb, :flagged, :value, :board, :max_index
+    attr_reader :bomb, :flagged, :board, :max_index, :revealed
 
     def initialize(position, board)
         @position = position
@@ -21,6 +21,11 @@ class Tile
         return :X if @flagged
         return "#{neighbour_bomb_count}" if @revealed && neighbour_bomb_count > 0
         return :O if @revealed
+        return :Z
+    end
+
+    def display_help #> Helper Method for Testing. Use to display all bombs
+        return :B if @bomb
         return :Z
     end
 
